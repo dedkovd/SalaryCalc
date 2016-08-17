@@ -5,9 +5,10 @@ class AbstractEmployee
 {
 public:
     virtual ~AbstractEmployee() {}
-    virtual float salaryAtDate(QDate date) = 0;
-    virtual float childsSalaryAtDate(QDate date) = 0;
-    virtual QList<AbstractEmployee*> allChildsTree() = 0;
+    virtual float salaryAtDate(const QDate date) const = 0;
+    virtual float childsSalaryAtDate(const QDate date) const = 0;
+    virtual QList<AbstractEmployee*> allChildsTree() const = 0;
+    virtual QList<AbstractEmployee*> subordinates() const = 0;
 };
 
 #endif // ABSTRACTEMPLOYEE

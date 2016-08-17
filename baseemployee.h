@@ -13,16 +13,18 @@ public:
     ~BaseEmployee();
 
     // Getters and setters
-    QString name();
-    void setName(QString value);
+    QString name() const;
+    void setName(const QString value);
 
-    QDate dateOfEmployment();
-    void setDateOfEmployment(QDate value);
+    QDate dateOfEmployment() const;
+    void setDateOfEmployment(const QDate value);
 
-    int baseSalary();
-    void setBaseSalary(int value);
+    int baseSalary() const;
+    void setBaseSalary(const int value);
 
-    int yearsInCompanyAtDate(QDate date);
+    int yearsInCompanyAtDate(const QDate date) const;
+
+    AbstractEmployee *chief() const;
 
 protected:
     QString _name;

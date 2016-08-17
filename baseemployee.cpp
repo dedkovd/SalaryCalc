@@ -13,37 +13,42 @@ BaseEmployee::~BaseEmployee()
     this->_chief = NULL;
 }
 
-QString BaseEmployee::name()
+QString BaseEmployee::name() const
 {
     return this->_name;
 }
 
-void BaseEmployee::setName(QString value)
+void BaseEmployee::setName(const QString value)
 {
     this->_name = value;
 }
 
-QDate BaseEmployee::dateOfEmployment()
+QDate BaseEmployee::dateOfEmployment() const
 {
     return this->_dateOfEmployment;
 }
 
-void BaseEmployee::setDateOfEmployment(QDate value)
+void BaseEmployee::setDateOfEmployment(const QDate value)
 {
     this->_dateOfEmployment = value;
 }
 
-int BaseEmployee::baseSalary()
+int BaseEmployee::baseSalary() const
 {
     return this->_baseSalary;
 }
 
-void BaseEmployee::setBaseSalary(int value)
+void BaseEmployee::setBaseSalary(const int value)
 {
     this->_baseSalary = value;
 }
 
-int BaseEmployee::yearsInCompanyAtDate(QDate date)
+int BaseEmployee::yearsInCompanyAtDate(const QDate date) const
 {
-    return qMax((qint64)0,this->_dateOfEmployment.daysTo(date) / 365);
+    return this->_dateOfEmployment.daysTo(date) / 365;
+}
+
+AbstractEmployee *BaseEmployee::chief() const
+{
+    return _chief;
 }

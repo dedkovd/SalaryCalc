@@ -11,10 +11,11 @@ public:
 
     void addSubordinate(AbstractEmployee* employee);
 
-    float salaryAtDate(QDate date);
-    float childsSalaryAtDate(QDate date);
+    float salaryAtDate(QDate date) const;
+    float childsSalaryAtDate(QDate date) const;
 
-    QList<AbstractEmployee *> allChildsTree();
+    QList<AbstractEmployee *> allChildsTree() const;
+    QList<AbstractEmployee *> subordinates() const;
 
 protected:
     QList<AbstractEmployee *> _subordinates;

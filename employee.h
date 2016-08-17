@@ -8,10 +8,11 @@ class Employee : public BaseEmployee
 public:
     explicit Employee(QString name, QDate dateOfEmployment, int baseSalary, AbstractEmployee *chief = 0);
 
-    float salaryAtDate(QDate date);
-    float childsSalaryAtDate(QDate) { return 0.f; }
+    float salaryAtDate(const QDate date) const;
+    float childsSalaryAtDate(QDate) const { return 0.f; }
 
-    QList<AbstractEmployee*> allChildsTree() { return QList<AbstractEmployee*>(); }
+    QList<AbstractEmployee*> allChildsTree() const { return QList<AbstractEmployee*>(); }
+    QList<AbstractEmployee*> subordinates() const { return QList<AbstractEmployee*>(); }
 };
 
 #endif // EMPLOYEE_H

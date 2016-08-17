@@ -17,13 +17,15 @@ SOURCES += main.cpp\
     employee.cpp \
     baseemployee.cpp \
     manager.cpp \
-    sales.cpp
+    sales.cpp \
+    employeesmodel.cpp
 
 HEADERS  += mainwindow.h \
     employee.h \
     baseemployee.h \
     manager.h \
     abstractemployee.h \
-    sales.h
+    sales.h \
+    employeesmodel.h
 
 FORMS    += mainwindow.ui
