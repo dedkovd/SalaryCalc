@@ -4,10 +4,12 @@
 #include <QString>
 #include <QDate>
 
-class BaseEmployee
+#include "abstractemployee.h"
+
+class BaseEmployee: public AbstractEmployee
 {
 public:
-    explicit BaseEmployee(QString name, QDate dateOfEmployment, int baseSalary, BaseEmployee *chief = 0);
+    explicit BaseEmployee(QString name, QDate dateOfEmployment, int baseSalary, AbstractEmployee *chief = 0);
     ~BaseEmployee();
 
     // Getters and setters
@@ -22,13 +24,11 @@ public:
 
     int yearsInCompanyAtDate(QDate date);
 
-    virtual int salaryAtDate(QDate date) = 0;
-
-private:
+protected:
     QString _name;
     QDate _dateOfEmployment;
     int _baseSalary; // Используем int, чтобы не было погрешности при вычислениях, т.о. оклад харнится в условных копейках
-    BaseEmployee *_chief;
+    AbstractEmployee *_chief;
 };
 
 #endif // ABSTRACTEMPLOYEE_H

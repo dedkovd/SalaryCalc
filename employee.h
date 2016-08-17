@@ -6,9 +6,12 @@
 class Employee : public BaseEmployee
 {
 public:
-    explicit Employee(QString name, QDate dateOfEmployment, int baseSalary, BaseEmployee* chief = 0);
+    explicit Employee(QString name, QDate dateOfEmployment, int baseSalary, AbstractEmployee *chief = 0);
 
-    int salaryAtDate(QDate date);
+    float salaryAtDate(QDate date);
+    float childsSalaryAtDate(QDate) { return 0.f; }
+
+    QList<AbstractEmployee*> allChildsTree() { return QList<AbstractEmployee*>(); }
 };
 
 #endif // EMPLOYEE_H

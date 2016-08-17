@@ -1,6 +1,6 @@
 #include "baseemployee.h"
 
-BaseEmployee::BaseEmployee(QString name, QDate dateOfEmployment, int baseSalary, BaseEmployee *chief)
+BaseEmployee::BaseEmployee(QString name, QDate dateOfEmployment, int baseSalary, AbstractEmployee *chief)
 {
     _name = name;
     _dateOfEmployment = dateOfEmployment;
@@ -45,5 +45,5 @@ void BaseEmployee::setBaseSalary(int value)
 
 int BaseEmployee::yearsInCompanyAtDate(QDate date)
 {
-    return this->_dateOfEmployment.daysTo(date) / 365;
+    return qMax((qint64)0,this->_dateOfEmployment.daysTo(date) / 365);
 }
