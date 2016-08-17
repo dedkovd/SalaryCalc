@@ -15,10 +15,15 @@ TEMPLATE = app
 SOURCES += main.cpp\
         mainwindow.cpp \
     employee.cpp \
-    baseemployee.cpp
+    baseemployee.cpp \
+    manager.cpp \
+    sales.cpp
 
 HEADERS  += mainwindow.h \
     employee.h \
-    baseemployee.h
+    baseemployee.h \
+    manager.h \
+    abstractemployee.h \
+    sales.h
 
 FORMS    += mainwindow.ui
