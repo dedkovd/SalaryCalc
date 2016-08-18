@@ -234,3 +234,15 @@ void EmployeesModel::initFromDb()
     while (q.next());
 }
 
+float EmployeesModel::totalSalary() const
+{
+    QList<AbstractEmployee*> allEmployes = rootEmployee->allChildsTree();
+    float res = 0.f;
+    foreach (AbstractEmployee * empl, allEmployes)
+    {
+        res += empl->salaryAtDate(this->modelDate());
+    }
+
+    return res;
+}
+

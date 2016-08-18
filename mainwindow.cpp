@@ -9,10 +9,15 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     model = new EmployeesModel();
-    ui->treeView->setModel(model);
-    ui->dateEdit->setDate(QDate::currentDate());
+    ui->treeView->setModel(model);    
     ui->treeView->header()->setStretchLastSection(false);
     ui->treeView->header()->setSectionResizeMode(QHeaderView::ResizeToContents);
+
+    connect(model, SIGNAL(dataChanged(QModelIndex,QModelIndex,QVector<int>)),
+                          this, SLOT(refreshTotals()));
+
+    ui->deCurrentDate->setDate(QDate::currentDate());
+
 }
 
 MainWindow::~MainWindow()
@@ -20,7 +25,12 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::on_dateEdit_dateChanged(const QDate &date)
+void MainWindow::on_deCurrentDate_dateChanged(const QDate &date)
 {
     model->setModelDate(date);
+}
+
+void MainWindow::refreshTotals()
+{
+    ui->lblTotalSalaryValue->setText(QString("%1").arg(model->totalSalary()));
 }

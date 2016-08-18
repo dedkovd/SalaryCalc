@@ -17,7 +17,8 @@ public:
     ~MainWindow();
 
 private slots:
-    void on_dateEdit_dateChanged(const QDate &date);
+    void refreshTotals();
+    void on_deCurrentDate_dateChanged(const QDate &date);
 
 private:
     Ui::MainWindow *ui;

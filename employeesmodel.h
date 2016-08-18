@@ -29,6 +29,8 @@ public:
 
     Qt::ItemFlags flags(const QModelIndex &index) const;
 
+    float totalSalary() const;
+
 private:
     BaseEmployee *rootEmployee;
 
