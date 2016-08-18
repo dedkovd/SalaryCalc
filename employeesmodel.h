@@ -14,6 +14,8 @@ public:
     explicit EmployeesModel();
 
     QVariant data(const QModelIndex &index, int role) const;
+    QVariant headerData(int section, Qt::Orientation orientation, int role) const;
+
     QModelIndex index(int row, int column, const QModelIndex &parent) const;
     QModelIndex parent(const QModelIndex &child) const;
 
@@ -23,10 +25,16 @@ public:
     QDate modelDate() const;
     void setModelDate(const QDate &modelDate);
 
+    bool setData(const QModelIndex &index, const QVariant &value, int role);
+
+    Qt::ItemFlags flags(const QModelIndex &index) const;
+
 private:
     BaseEmployee *rootEmployee;
 
     QDate _modelDate;
+
+    void initFromDb();
 };
 
 #endif // EMPLOYEESMODEL_H

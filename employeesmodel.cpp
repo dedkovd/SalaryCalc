@@ -3,35 +3,14 @@
 #include "sales.h"
 #include "employee.h"
 
+#include <QtSql>
+
+#define EMPLOYEES_QUERY "select id, parent, name, base_salary, date_of_employment, type from employees order by parent"
+
 EmployeesModel::EmployeesModel()
 {
-    rootEmployee = new Manager("Invisible manager", QDate(1900,1,1),0);
-
-    Sales *sales1 = new Sales(QString("Sales1"),QDate(2005,4,11),150,rootEmployee);
-    Manager *manager1 = new Manager(QString("Manager1"), QDate(2006,1,13),200, sales1);
-    Employee *empl1 = new Employee(QString("Employee1"), QDate(2007,8,10),100, manager1);
-    Employee *empl2 = new Employee(QString("Employee2"), QDate(2005,11,11),110, manager1);
-    Sales *sales2 = new Sales(QString("Sales2"),QDate(2007,1,25),120,manager1);
-    Employee *empl3 = new Employee(QString("Employee3"), QDate(2005,4,11),80, sales2);
-    Employee *empl4 = new Employee(QString("Employee4"),QDate(2006,1,13),105,sales1);
-    Sales *sales3 = new Sales(QString("Sales3"),QDate(2007,8,10),115,sales1);
-    Employee *empl5 = new Employee(QString("Employee5"),QDate(2005,11,11),100,sales3);
-    Employee *empl6 = new Employee(QString("Employee6"),QDate(2007,1,25),120,sales3);
-
-    ((Manager*)rootEmployee)->addSubordinate(sales1);
-
-    sales1->addSubordinate(manager1);
-    sales1->addSubordinate(empl4);
-    sales1->addSubordinate(sales3);
-
-    manager1->addSubordinate(empl1);
-    manager1->addSubordinate(empl2);
-    manager1->addSubordinate(sales2);
-
-    sales2->addSubordinate(empl3);
-
-    sales3->addSubordinate(empl5);
-    sales3->addSubordinate(empl6);
+    rootEmployee = new Manager(0,"Invisible manager", QDate(1900,1,1),0);
+    initFromDb();
 }
 
 QVariant EmployeesModel::data(const QModelIndex &index, int role) const
@@ -41,7 +20,7 @@ QVariant EmployeesModel::data(const QModelIndex &index, int role) const
         return QVariant();
     }
 
-    if (role != Qt::DisplayRole)
+    if (role != Qt::DisplayRole && role != Qt::EditRole)
     {
         return QVariant();
     }
@@ -60,6 +39,27 @@ QVariant EmployeesModel::data(const QModelIndex &index, int role) const
     default:
         return QVariant();
     }
+}
+
+QVariant EmployeesModel::headerData(int section, Qt::Orientation orientation, int role) const
+{
+    if (orientation == Qt::Horizontal && role == Qt::DisplayRole)
+    {
+        switch (section) {
+        case 0:
+            return tr("Name");
+        case 1:
+            return tr("Date of employment");
+        case 2:
+            return tr("Base salary");
+        case 3:
+            return tr("Current salary");
+        default:
+            break;
+        }
+    }
+
+    return QVariant();
 }
 
 QModelIndex EmployeesModel::index(int row, int column, const QModelIndex &parent) const
@@ -145,5 +145,92 @@ void EmployeesModel::setModelDate(const QDate &modelDate)
 {
     _modelDate = modelDate;
     this->dataChanged(this->index(0,3,QModelIndex()), this->index(this->rowCount(QModelIndex()),3,QModelIndex()));
+}
+
+bool EmployeesModel::setData(const QModelIndex &index, const QVariant &value, int role)
+{
+    Q_UNUSED(role)
+
+    if (!index.isValid())
+    {
+        return false;
+    }
+
+    BaseEmployee *employee = static_cast<BaseEmployee*>(index.internalPointer());
+
+    switch (index.column()) {
+    case 0:
+        employee->setName(value.toString());
+        break;
+    case 1:
+        employee->setDateOfEmployment(value.toDate());
+        break;
+    case 2:
+        employee->setBaseSalary(value.toInt());
+        break;
+    default:
+        return false;
+    }
+
+    return true;
+}
+
+Qt::ItemFlags EmployeesModel::flags(const QModelIndex &index) const
+{
+    if (!index.isValid())
+    {
+        return 0;
+    }
+
+    if (index.column() > 2)
+    {
+        return 0;
+    }
+
+    return Qt::ItemIsEditable | QAbstractItemModel::flags(index);
+}
+
+void EmployeesModel::initFromDb()
+{
+    QHash<int, AbstractEmployee *> allEmployees;
+
+    QSqlQuery q(EMPLOYEES_QUERY);
+    q.first();
+    do
+    {
+        int id = q.value("id").toInt();
+        int type = q.value("type").toInt();
+        int chiefId = q.value("parent").toInt();
+        BaseEmployee *chief = (BaseEmployee*)allEmployees[chiefId];
+
+        if (!chief)
+        {
+            chief = rootEmployee;
+        }
+
+        QString name = q.value("name").toString();
+        QDate dateOfEmployment = q.value("date_of_employment").toDate();
+        int baseSalary = q.value("base_salary").toInt();
+
+        AbstractEmployee *employee;
+
+        switch (type) {
+        case 0:
+            employee = new Employee(id, name, dateOfEmployment, baseSalary, chief);
+            break;
+        case 1:
+            employee = new Manager(id, name, dateOfEmployment, baseSalary, chief);
+            break;
+        case 2:
+            employee = new Sales(id, name, dateOfEmployment, baseSalary, chief);
+            break;
+        default:
+            break;
+        }
+
+        ((Manager*)chief)->addSubordinate(employee);
+        allEmployees[id] = employee;
+    }
+    while (q.next());
 }
 

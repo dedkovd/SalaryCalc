@@ -1,8 +1,9 @@
 #include "baseemployee.h"
 #include "math.h"
 
-BaseEmployee::BaseEmployee(QString name, QDate dateOfEmployment, int baseSalary, AbstractEmployee *chief)
+BaseEmployee::BaseEmployee(int id, QString name, QDate dateOfEmployment, int baseSalary, AbstractEmployee *chief)
 {
+    _id = id;
     _name = name;
     _dateOfEmployment = dateOfEmployment;
     _baseSalary = baseSalary;

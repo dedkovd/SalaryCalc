@@ -10,6 +10,9 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     model = new EmployeesModel();
     ui->treeView->setModel(model);
+    ui->dateEdit->setDate(QDate::currentDate());
+    ui->treeView->header()->setStretchLastSection(false);
+    ui->treeView->header()->setSectionResizeMode(QHeaderView::ResizeToContents);
 }
 
 MainWindow::~MainWindow()

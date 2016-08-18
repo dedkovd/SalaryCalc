@@ -1,7 +1,7 @@
 #include "employee.h"
 
-Employee::Employee(QString name, QDate dateOfEmployment, int baseSalary, AbstractEmployee* chief):
-    BaseEmployee(name, dateOfEmployment, baseSalary, chief)
+Employee::Employee(int id, QString name, QDate dateOfEmployment, int baseSalary, AbstractEmployee* chief):
+    BaseEmployee(id, name, dateOfEmployment, baseSalary, chief)
 {}
 
 float Employee::calcSalaryAtDate(QDate date) const

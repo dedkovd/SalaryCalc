@@ -28,7 +28,7 @@ private Q_SLOTS:
 
 void TestEmployee::yearsInCompanyAtDate()
 {
-    Employee empl(QString(""), QDate(2005,4,11),0);
+    Employee empl(0, QString(""), QDate(2005,4,11),0);
 
     QFETCH(QDate, date);
     QFETCH(int, years);
@@ -52,7 +52,7 @@ void TestEmployee::yearsInCompanyAtDate_data()
 
 void TestEmployee::employeeSalaryAtDate()
 {
-    Employee empl(QString(""), QDate(2005,4,11),100);
+    Employee empl(0, QString(""), QDate(2005,4,11),100);
 
     QFETCH(QDate, date);
     QFETCH(float, result);
@@ -83,15 +83,15 @@ void TestEmployee::employeeSalaryAtDate_data()
 
 void TestEmployee::managerSalaryAtDate()
 {
-    Manager manager1(QString("manager1"), QDate(2005,4,11),200);
-    Employee empl1(QString("empl1"), QDate(2006,1,13),100, &manager1);
-    Employee empl2(QString("empl2"), QDate(2007,8,10),110, &manager1);
-    Manager manager2(QString("manager2"), QDate(2005,11,11),150, &manager1);
+    Manager manager1(0, QString("manager1"), QDate(2005,4,11),200);
+    Employee empl1(1, QString("empl1"), QDate(2006,1,13),100, &manager1);
+    Employee empl2(2, QString("empl2"), QDate(2007,8,10),110, &manager1);
+    Manager manager2(3, QString("manager2"), QDate(2005,11,11),150, &manager1);
     manager1.addSubordinate(&manager2);
     manager1.addSubordinate(&empl1);
     manager1.addSubordinate(&empl2);
 
-    Employee empl3(QString("empl3"), QDate(2007,1,25),105, &manager2);
+    Employee empl3(4, QString("empl3"), QDate(2007,1,25),105, &manager2);
     manager2.addSubordinate(&empl3);
 
     QFETCH(QDate, date);
@@ -123,16 +123,16 @@ void TestEmployee::managerSalaryAtDate_data()
 
 void TestEmployee::salesSalaryAtDate()
 {
-    Sales sales1(QString("Sales1"),QDate(2005,4,11),150);
-    Manager manager1(QString("Manager1"), QDate(2006,1,13),200, &sales1);
-    Employee empl1(QString("Employee1"), QDate(2007,8,10),100, &manager1);
-    Employee empl2(QString("Employee2"), QDate(2005,11,11),110, &manager1);
-    Sales sales2(QString("Sales2"),QDate(2007,1,25),120,&manager1);
-    Employee empl3(QString("Employee3"), QDate(2005,4,11),80, &sales2);
-    Employee empl4(QString("Employee4"),QDate(2006,1,13),105,&sales1);
-    Sales sales3(QString("Sales3"),QDate(2007,8,10),115,&sales1);
-    Employee empl5(QString("Employee5"),QDate(2005,11,11),100,&sales3);
-    Employee empl6(QString("Employee6"),QDate(2007,1,25),120,&sales3);
+    Sales sales1(0, QString("Sales1"),QDate(2005,4,11),150);
+    Manager manager1(1, QString("Manager1"), QDate(2006,1,13),200, &sales1);
+    Employee empl1(2, QString("Employee1"), QDate(2007,8,10),100, &manager1);
+    Employee empl2(3, QString("Employee2"), QDate(2005,11,11),110, &manager1);
+    Sales sales2(4, QString("Sales2"),QDate(2007,1,25),120,&manager1);
+    Employee empl3(5, QString("Employee3"), QDate(2005,4,11),80, &sales2);
+    Employee empl4(6, QString("Employee4"),QDate(2006,1,13),105,&sales1);
+    Sales sales3(7, QString("Sales3"),QDate(2007,8,10),115,&sales1);
+    Employee empl5(8, QString("Employee5"),QDate(2005,11,11),100,&sales3);
+    Employee empl6(9, QString("Employee6"),QDate(2007,1,25),120,&sales3);
 
     sales1.addSubordinate(&manager1);
     sales1.addSubordinate(&empl4);

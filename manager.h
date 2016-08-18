@@ -6,7 +6,7 @@
 class Manager : public BaseEmployee
 {
 public:
-    explicit Manager(QString name, QDate dateOfEmployment, int baseSalary, BaseEmployee* chief = 0);
+    explicit Manager(int id, QString name, QDate dateOfEmployment, int baseSalary, BaseEmployee* chief = 0);
     ~Manager();
 
     void addSubordinate(AbstractEmployee* employee);

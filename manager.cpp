@@ -1,7 +1,7 @@
 #include "manager.h"
 
-Manager::Manager(QString name, QDate dateOfEmployment, int baseSalary, BaseEmployee *chief):
-    BaseEmployee(name,dateOfEmployment, baseSalary, chief)
+Manager::Manager(int id, QString name, QDate dateOfEmployment, int baseSalary, BaseEmployee *chief):
+    BaseEmployee(id,name,dateOfEmployment,baseSalary,chief)
 {
 }
 

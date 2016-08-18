@@ -9,7 +9,7 @@
 class BaseEmployee: public AbstractEmployee
 {
 public:
-    explicit BaseEmployee(QString name, QDate dateOfEmployment, int baseSalary, AbstractEmployee *chief = 0);
+    explicit BaseEmployee(int id, QString name, QDate dateOfEmployment, int baseSalary, AbstractEmployee *chief = 0);
     ~BaseEmployee();
 
     // Getters and setters
@@ -29,6 +29,7 @@ public:
     AbstractEmployee *chief() const;
 
 protected:
+    int _id;
     QString _name;
     QDate _dateOfEmployment;
     int _baseSalary; // Используем int, чтобы не было погрешности при вычислениях, т.о. оклад харнится в условных копейках

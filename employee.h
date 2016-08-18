@@ -6,7 +6,7 @@
 class Employee : public BaseEmployee
 {
 public:
-    explicit Employee(QString name, QDate dateOfEmployment, int baseSalary, AbstractEmployee *chief = 0);
+    explicit Employee(int id, QString name, QDate dateOfEmployment, int baseSalary, AbstractEmployee *chief = 0);
 
     float childsSalaryAtDate(QDate) const { return 0.f; }
 
