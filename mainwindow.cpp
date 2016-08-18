@@ -16,8 +16,12 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(model, SIGNAL(dataChanged(QModelIndex,QModelIndex,QVector<int>)),
                           this, SLOT(refreshTotals()));
 
+    connect(ui->treeView->selectionModel(), SIGNAL(currentChanged(QModelIndex,QModelIndex)),
+            this, SLOT(updateActions()));
+
     ui->deCurrentDate->setDate(QDate::currentDate());
 
+    updateActions();
 }
 
 MainWindow::~MainWindow()
@@ -33,4 +37,18 @@ void MainWindow::on_deCurrentDate_dateChanged(const QDate &date)
 void MainWindow::refreshTotals()
 {
     ui->lblTotalSalaryValue->setText(QString("%1").arg(model->totalSalary()));
+}
+
+void MainWindow::on_actionRemove_employee_triggered()
+{
+    QModelIndex selected = ui->treeView->currentIndex();
+    if (model->removeRow(selected.row(), selected.parent()))
+    {
+        updateActions();
+    }
+}
+
+void MainWindow::updateActions()
+{
+    ui->actionRemove_employee->setEnabled(ui->treeView->currentIndex().isValid());
 }

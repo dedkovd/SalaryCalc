@@ -6,6 +6,9 @@
 #include <QtSql>
 
 #define EMPLOYEES_QUERY "select id, parent, name, base_salary, date_of_employment, type from employees order by parent"
+#define EMPLOYEE_REMOVE_QUERY "delete from employees where id = :id"
+#define EMPLOYEE_ADD_QUERY "insert into employees(parent, name, base_salary, date_of_employment, type) values (:p, :n, :s, :d, :t)"
+#define EMPLOYEE_UPDATE_QUERY "update employees set %1 = :val where id = :id"
 
 EmployeesModel::EmployeesModel()
 {
@@ -171,6 +174,28 @@ bool EmployeesModel::setData(const QModelIndex &index, const QVariant &value, in
     default:
         return false;
     }
+
+    return true;
+}
+
+bool EmployeesModel::removeRow(int row, const QModelIndex &parent)
+{
+    if (!parent.isValid())
+    {
+        return false;
+    }
+
+    Manager *employee = static_cast<Manager*>(parent.internalPointer());
+
+    beginRemoveRows(parent, row, row+1);
+
+    QSqlQuery q;
+    q.prepare(EMPLOYEE_REMOVE_QUERY); // Все подчиненные автоматом удалятся на стороне базы
+    q.bindValue(":id", employee->subordinateId(row));
+    q.exec();
+
+    employee->removeSubordinate(row);
+    endRemoveRows();
 
     return true;
 }

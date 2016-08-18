@@ -18,11 +18,16 @@ public:
 
 private slots:
     void refreshTotals();
+    void updateActions();
     void on_deCurrentDate_dateChanged(const QDate &date);
+
+    void on_actionRemove_employee_triggered();
 
 private:
     Ui::MainWindow *ui;
     EmployeesModel *model;
+
+
 };
 
 #endif // MAINWINDOW_H

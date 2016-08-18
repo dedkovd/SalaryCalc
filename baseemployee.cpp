@@ -66,3 +66,8 @@ AbstractEmployee *BaseEmployee::chief() const
 {
     return _chief;
 }
+
+int BaseEmployee::id() const
+{
+    return _id;
+}

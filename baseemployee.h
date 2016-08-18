@@ -28,6 +28,8 @@ public:
 
     AbstractEmployee *chief() const;
 
+    int id() const;
+
 protected:
     int _id;
     QString _name;

@@ -15,6 +15,17 @@ void Manager::addSubordinate(AbstractEmployee *employee)
     this->_subordinates.append(employee);
 }
 
+void Manager::removeSubordinate(const int index)
+{
+    this->_subordinates.removeAt(index);
+}
+
+int Manager::subordinateId(const int index)
+{
+    BaseEmployee *subordinate = (BaseEmployee*)this->_subordinates.at(index);
+    return subordinate->id();
+}
+
 float Manager::calcSalaryAtDate(QDate date) const
 {
     return this->baseSalary() +

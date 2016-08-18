@@ -97,8 +97,20 @@
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
+   <addaction name="actionRemove_employee"/>
+   <addaction name="actionAdd_employee"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
+  <action name="actionRemove_employee">
+   <property name="text">
+    <string>Remove employee</string>
+   </property>
+  </action>
+  <action name="actionAdd_employee">
+   <property name="text">
+    <string>Add employee</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources/>

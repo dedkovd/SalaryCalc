@@ -1,4 +1,4 @@
-create table  if not exists employees (id integer primary key, parent integer, name varchar(100) not null, base_salary int not null, date_of_employment date not null, type int not null);
+create table  if not exists employees (id integer primary key, parent integer, name varchar(100) not null, base_salary int not null, date_of_employment date not null, type int not null, foreign key(parent) references employees(id) on delete cascade);
 delete from employees;
 insert into employees(parent, name, base_salary, date_of_employment, type) values (null, 'Sales 1', 150, '2005-04-11', 2);
 insert into employees(parent, name, base_salary, date_of_employment, type) values (1, 'Manager 1', 200, '2006-01-13', 1);

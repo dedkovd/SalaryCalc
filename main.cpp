@@ -13,6 +13,9 @@ bool initDatabase(QString fileName = ":MEMORY:")
         return false;
     }
 
+    QSqlQuery q;
+    q.exec("PRAGMA foreign_keys = ON;");
+
     QFile f(":/db_init.sql");
     f.open(QFile::ReadOnly);
     QString script = f.readLine();

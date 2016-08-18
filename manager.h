@@ -10,6 +10,8 @@ public:
     ~Manager();
 
     void addSubordinate(AbstractEmployee* employee);
+    void removeSubordinate(const int index);
+    int subordinateId(const int index);
 
     float childsSalaryAtDate(QDate date) const;
 
