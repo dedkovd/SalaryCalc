@@ -41,6 +41,8 @@ void TestEmployee::yearsInCompanyAtDate_data()
     QTest::addColumn<QDate>("date");
     QTest::addColumn<int>("years");
 
+    QTest::newRow("31.12.2004") << QDate(2004,12,31) << -1;
+    QTest::newRow("11.03.2004") << QDate(2004,3,11) << -2;
     QTest::newRow("31.12.2005") << QDate(2005,12,31) << 0;
     QTest::newRow("10.04.2006") << QDate(2006,4,10) << 0;
     QTest::newRow("31.12.2006") << QDate(2006,12,31) << 1;
@@ -103,10 +105,10 @@ void TestEmployee::managerSalaryAtDate_data()
     QTest::addColumn<QDate>("date");
     QTest::addColumn<float>("result");
 
-    QTest::newRow("first year 1") << QDate(2005,12,31) << 201.803f;
-    QTest::newRow("first year 2") << QDate(2006,4,10) << 201.803f;
-    QTest::newRow("2nd year") << QDate(2006,12,31) << 211.84f;
-    QTest::newRow("3th year") << QDate(2007,4,12) << 221.855f;
+    QTest::newRow("first year 1") << QDate(2005,12,31) << 200.75f;
+    QTest::newRow("first year 2") << QDate(2006,4,10) << 201.250f;
+    QTest::newRow("2nd year") << QDate(2006,12,31) << 211.288f;
+    QTest::newRow("3th year") << QDate(2007,4,12) << 221.305f;
     QTest::newRow("4th year") << QDate(2008,5,31) << 231.908f;
     QTest::newRow("5th year") << QDate(2009,5,31) << 241.977f;
     QTest::newRow("6th year") << QDate(2010,5,31) << 252.046f;
@@ -156,10 +158,10 @@ void TestEmployee::salesSalaryAtDate_data()
     QTest::addColumn<QDate>("date");
     QTest::addColumn<float>("result");
 
-    QTest::newRow("first year 1") << QDate(2005,12,31) << 153.158f;
-    QTest::newRow("first year 2") << QDate(2006,4,10) << 153.158f;
-    QTest::newRow("2nd year") << QDate(2006,12,31) << 154.684f;
-    QTest::newRow("3th year") << QDate(2007,4,12) << 156.231f;
+    QTest::newRow("first year 1") << QDate(2005,12,31) << 150.870f;
+    QTest::newRow("first year 2") << QDate(2006,4,10) << 151.787f;
+    QTest::newRow("2nd year") << QDate(2006,12,31) << 153.313f;
+    QTest::newRow("3th year") << QDate(2007,4,12) << 155.582f;
     QTest::newRow("4th year") << QDate(2008,5,31) << 157.811f;
     QTest::newRow("5th year") << QDate(2009,5,31) << 159.403f;
     QTest::newRow("6th year") << QDate(2010,5,31) << 160.996f;

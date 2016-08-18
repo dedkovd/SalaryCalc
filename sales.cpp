@@ -5,17 +5,10 @@ Sales::Sales(QString name, QDate dateOfEmployment, int baseSalary, BaseEmployee 
 {
 }
 
-float Sales::salaryAtDate(QDate date) const
+float Sales::calcSalaryAtDate(QDate date) const
 {
-    int yic = this->yearsInCompanyAtDate(date);
-
-    if (yic < 0) // Если еще не работал, зарплата не положена
-    {
-        return 0;
-    }
-
     return this->baseSalary() +
-            this->baseSalary() * (0.01 * qMin(35, yic)) +
+            this->baseSalary() * (0.01 * qMin(35, this->yearsInCompanyAtDate(date))) +
             this->allLevelsSalaryAtDate(date) * 0.003;
 }
 

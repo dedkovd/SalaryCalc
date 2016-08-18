@@ -1,7 +1,5 @@
 #include "manager.h"
 
-#include <QDebug>
-
 Manager::Manager(QString name, QDate dateOfEmployment, int baseSalary, BaseEmployee *chief):
     BaseEmployee(name,dateOfEmployment, baseSalary, chief)
 {
@@ -17,17 +15,10 @@ void Manager::addSubordinate(AbstractEmployee *employee)
     this->_subordinates.append(employee);
 }
 
-float Manager::salaryAtDate(QDate date) const
+float Manager::calcSalaryAtDate(QDate date) const
 {
-    int yic = this->yearsInCompanyAtDate(date);
-
-    if (yic < 0) // Если еще не работал, зарплата не положена
-    {
-        return 0;
-    }
-
     return this->baseSalary() +
-            this->baseSalary() * (0.05 * qMin(8, yic)) +
+            this->baseSalary() * (0.05 * qMin(8, this->yearsInCompanyAtDate(date))) +
             this->childsSalaryAtDate(date) * 0.005;
 }
 

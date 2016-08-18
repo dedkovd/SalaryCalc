@@ -24,6 +24,8 @@ public:
 
     int yearsInCompanyAtDate(const QDate date) const;
 
+    float salaryAtDate(const QDate date) const;
+
     AbstractEmployee *chief() const;
 
 protected:

@@ -1,4 +1,5 @@
 #include "baseemployee.h"
+#include "math.h"
 
 BaseEmployee::BaseEmployee(QString name, QDate dateOfEmployment, int baseSalary, AbstractEmployee *chief)
 {
@@ -45,7 +46,19 @@ void BaseEmployee::setBaseSalary(const int value)
 
 int BaseEmployee::yearsInCompanyAtDate(const QDate date) const
 {
-    return this->_dateOfEmployment.daysTo(date) / 365;
+    return  floor(this->_dateOfEmployment.daysTo(date) / 365.);
+}
+
+float BaseEmployee::salaryAtDate(const QDate date) const
+{
+    int yic = this->yearsInCompanyAtDate(date);
+
+    if (yic < 0) // Если еще не работал, зарплата не положена
+    {
+        return 0.f;
+    }
+
+    return calcSalaryAtDate(date);
 }
 
 AbstractEmployee *BaseEmployee::chief() const
