@@ -29,6 +29,7 @@ public:
     AbstractEmployee *chief() const;
 
     int id() const;
+    void setId(int id);
 
 protected:
     int _id;

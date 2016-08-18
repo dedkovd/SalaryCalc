@@ -10,6 +10,8 @@ public:
     virtual QList<AbstractEmployee*> allChildsTree() const = 0;
     virtual QList<AbstractEmployee*> subordinates() const = 0;
 
+    virtual bool canHaveSubbordinates() const = 0;
+
 protected:
     virtual float calcSalaryAtDate(const QDate date) const = 0;
 };

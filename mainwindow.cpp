@@ -1,7 +1,10 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+#include "addemployeedialog.h"
 #include "employeesmodel.h"
+#include "manager.h"
+#include "employee.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -50,5 +53,26 @@ void MainWindow::on_actionRemove_employee_triggered()
 
 void MainWindow::updateActions()
 {
-    ui->actionRemove_employee->setEnabled(ui->treeView->currentIndex().isValid());
+    QModelIndex idx = ui->treeView->currentIndex();
+
+    ui->actionAdd_employee->setEnabled(false);
+    ui->actionRemove_employee->setEnabled(idx.isValid());
+    if (idx.isValid())
+    {
+        BaseEmployee *empl = static_cast<BaseEmployee*>(idx.internalPointer());
+        ui->actionAdd_employee->setEnabled(empl->canHaveSubbordinates());
+    }
+}
+
+void MainWindow::on_actionAdd_employee_triggered()
+{
+    QModelIndex selected = ui->treeView->currentIndex();
+    Manager *manager = static_cast<Manager*>(selected.internalPointer());
+
+    AddEmployeeDialog d;
+    d.setChief(manager);
+    if (d.exec() == QDialog::Accepted)
+    {
+        model->insertRow(selected.row(), selected, d.employeeType(), (BaseEmployee*)d.newEmployee());
+    }
 }

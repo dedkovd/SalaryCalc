@@ -10,6 +10,7 @@
 #define EMPLOYEE_REMOVE_QUERY "delete from employees where id = :id"
 #define EMPLOYEE_ADD_QUERY "insert into employees(parent, name, base_salary, date_of_employment, type) values (:p, :n, :s, :d, :t)"
 #define EMPLOYEE_UPDATE_QUERY "update employees set %1 = :val where id = :id"
+#define INSERTED_ROW_ID_QUERY "select last_insert_rowid()"
 
 EmployeesModel::EmployeesModel()
 {
@@ -206,6 +207,37 @@ bool EmployeesModel::removeRow(int row, const QModelIndex &parent)
 
     employee->removeSubordinate(row);
     endRemoveRows();
+
+    return true;
+}
+
+bool EmployeesModel::insertRow(int row, const QModelIndex &parent, int type, BaseEmployee *employee)
+{
+    if (!parent.isValid())
+    {
+        return false;
+    }
+
+    beginInsertRows(parent, row, row+1);
+
+    ((Manager*)employee->chief())->addSubordinate(employee);
+
+    QSqlQuery q;
+    q.prepare(EMPLOYEE_ADD_QUERY);
+    q.bindValue(":p",((BaseEmployee*)employee->chief())->id());
+    q.bindValue(":n",employee->name());
+    q.bindValue(":s",employee->baseSalary());
+    q.bindValue(":d",employee->dateOfEmployment());
+    q.bindValue(":t",type);
+
+    if (q.exec())
+    {
+        q.exec(INSERTED_ROW_ID_QUERY);
+        q.first();
+        employee->setId(q.value(0).toInt());
+    }
+
+    endInsertRows();
 
     return true;
 }

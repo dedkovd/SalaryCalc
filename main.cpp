@@ -16,20 +16,30 @@ bool initDatabase(QString fileName = ":MEMORY:")
     QSqlQuery q;
     q.exec("PRAGMA foreign_keys = ON;");
 
-    QFile f(":/db_init.sql");
-    f.open(QFile::ReadOnly);
-    QString script = f.readLine();
-    while (!script.isEmpty())
+    bool tablesExists = false;
+    if (q.exec("select count(*) from sqlite_master where name = 'employees'"))
     {
-        QSqlQuery q;
-        if (!q.exec(script))
-        {
-            qDebug() << q.lastError();
-            return false;
-        }
-        script = f.readLine();
+        q.first();
+        tablesExists = q.value(0).toInt() == 1;
     }
-    f.close();
+
+    if (!tablesExists)
+    {
+        QFile f(":/db_init.sql");
+        f.open(QFile::ReadOnly);
+        QString script = f.readLine();
+        while (!script.isEmpty())
+        {
+            QSqlQuery q;
+            if (!q.exec(script))
+            {
+                qDebug() << q.lastError();
+                return false;
+            }
+            script = f.readLine();
+        }
+        f.close();
+    }
 
     return true;
 }

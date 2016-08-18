@@ -13,6 +13,8 @@ public:
     QList<AbstractEmployee*> allChildsTree() const { return QList<AbstractEmployee*>(); }
     QList<AbstractEmployee*> subordinates() const { return QList<AbstractEmployee*>(); }
 
+    bool canHaveSubbordinates() const { return false; }
+
 protected:
     float calcSalaryAtDate(const QDate date) const;
 };

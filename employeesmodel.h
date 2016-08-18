@@ -27,6 +27,7 @@ public:
 
     bool setData(const QModelIndex &index, const QVariant &value, int role);
     bool removeRow(int row, const QModelIndex &parent);
+    bool insertRow(int row, const QModelIndex &parent, int type, BaseEmployee *employee);
 
     Qt::ItemFlags flags(const QModelIndex &index) const;
 

@@ -18,7 +18,8 @@ SOURCES += main.cpp\
     baseemployee.cpp \
     manager.cpp \
     sales.cpp \
-    employeesmodel.cpp
+    employeesmodel.cpp \
+    addemployeedialog.cpp
 
 HEADERS  += mainwindow.h \
     employee.h \
@@ -26,9 +27,11 @@ HEADERS  += mainwindow.h \
     manager.h \
     abstractemployee.h \
     sales.h \
-    employeesmodel.h
+    employeesmodel.h \
+    addemployeedialog.h
 
-FORMS    += mainwindow.ui
+FORMS    += mainwindow.ui \
+    addemployeedialog.ui
 
 RESOURCES += \
     resources.qrc

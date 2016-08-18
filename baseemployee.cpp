@@ -71,3 +71,8 @@ int BaseEmployee::id() const
 {
     return _id;
 }
+
+void BaseEmployee::setId(int id)
+{
+    _id = id;
+}

@@ -23,6 +23,8 @@ private slots:
 
     void on_actionRemove_employee_triggered();
 
+    void on_actionAdd_employee_triggered();
+
 private:
     Ui::MainWindow *ui;
     EmployeesModel *model;
