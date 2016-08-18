@@ -3,6 +3,7 @@
 #include "sales.h"
 #include "employee.h"
 
+#include <QDebug>
 #include <QtSql>
 
 #define EMPLOYEES_QUERY "select id, parent, name, base_salary, date_of_employment, type from employees order by parent"
@@ -161,19 +162,28 @@ bool EmployeesModel::setData(const QModelIndex &index, const QVariant &value, in
 
     BaseEmployee *employee = static_cast<BaseEmployee*>(index.internalPointer());
 
+    QSqlQuery q;
+
     switch (index.column()) {
     case 0:
         employee->setName(value.toString());
+        q.prepare(QString(EMPLOYEE_UPDATE_QUERY).arg("name"));
         break;
     case 1:
         employee->setDateOfEmployment(value.toDate());
+        q.prepare(QString(EMPLOYEE_UPDATE_QUERY).arg("date_of_employment"));
         break;
     case 2:
         employee->setBaseSalary(value.toInt());
+        q.prepare(QString(EMPLOYEE_UPDATE_QUERY).arg("base_salary"));
         break;
     default:
         return false;
     }
+
+    q.bindValue(":val", value);
+    q.bindValue(":id", employee->id());
+    q.exec();
 
     return true;
 }
