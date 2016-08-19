@@ -19,7 +19,7 @@ AddEmployeeDialog::~AddEmployeeDialog()
 
 AbstractEmployee *AddEmployeeDialog::newEmployee() const
 {
-    AbstractEmployee *newEmployee;
+    AbstractEmployee *newEmployee = NULL;
 
     QString name = ui->leName->text();
     int baseSalary = ui->sbBaseSalary->value();
