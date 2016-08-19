@@ -6,7 +6,7 @@
 class Employee : public AbstractEmployee
 {
 public:
-    explicit Employee(int id, QString name, QDate dateOfEmployment, int baseSalary, AbstractEmployee *chief = 0);
+    explicit Employee(int id, QString name, QDate dateOfEmployment, int baseSalary);
     ~Employee();
 
     int id() const;
@@ -26,6 +26,7 @@ public:
     EmployeeKind kind() const { return KindEmployee; }
 
     AbstractEmployee* chief() const;
+    void setChief(AbstractEmployee *chief);
 
     bool canHaveSubbordinates() const { return false; }
     QList<AbstractEmployee*> subordinates() const { return QList<AbstractEmployee*>(); }

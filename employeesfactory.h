@@ -8,7 +8,7 @@
 class EmployeesFactory
 {
 public:
-    static AbstractEmployee *createEmployee(EmployeeKind kind, int id, QString name, QDate dateOfEmployment, int baseSalary, AbstractEmployee* chief);
+    static AbstractEmployee *createEmployee(EmployeeKind kind, int id, QString name, QDate dateOfEmployment, int baseSalary);
 };
 
 #endif // EMPLOYEESFACTORY_H

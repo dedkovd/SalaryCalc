@@ -1,7 +1,7 @@
 #include "sales.h"
 
-Sales::Sales(int id, QString name, QDate dateOfEmployment, int baseSalary, AbstractEmployee *chief):
-    Manager(id, name, dateOfEmployment, baseSalary, chief)
+Sales::Sales(int id, QString name, QDate dateOfEmployment, int baseSalary):
+    Manager(id, name, dateOfEmployment, baseSalary)
 {
 }
 

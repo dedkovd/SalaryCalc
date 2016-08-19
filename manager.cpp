@@ -1,7 +1,7 @@
 #include "manager.h"
 
-Manager::Manager(int id, QString name, QDate dateOfEmployment, int baseSalary, AbstractEmployee *chief):
-    Employee(id,name,dateOfEmployment,baseSalary,chief)
+Manager::Manager(int id, QString name, QDate dateOfEmployment, int baseSalary):
+    Employee(id,name,dateOfEmployment,baseSalary)
 {
 }
 
@@ -13,6 +13,7 @@ Manager::~Manager()
 void Manager::addSubordinate(AbstractEmployee *employee)
 {
     this->_subordinates.append(employee);
+    employee->setChief(this);
 }
 
 void Manager::removeSubordinate(const int index)

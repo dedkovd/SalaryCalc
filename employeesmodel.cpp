@@ -1,17 +1,8 @@
 #include "employeesmodel.h"
 #include "manager.h"
-#include "sales.h"
-#include "employee.h"
+#include "dal.h"
 
-#include <QtSql>
-
-#include "employeesfactory.h"
-
-#define EMPLOYEES_QUERY "select id, parent, name, base_salary, date_of_employment, kind from employees order by parent"
-#define EMPLOYEE_REMOVE_QUERY "delete from employees where id = :id"
-#define EMPLOYEE_ADD_QUERY "insert into employees(parent, name, base_salary, date_of_employment, kind) values (:p, :n, :s, :d, :t)"
-#define EMPLOYEE_UPDATE_QUERY "update employees set %1 = :val where id = :id"
-#define INSERTED_ROW_ID_QUERY "select last_insert_rowid()"
+#include <QDebug>
 
 EmployeesModel::EmployeesModel()
 {
@@ -164,28 +155,21 @@ bool EmployeesModel::setData(const QModelIndex &index, const QVariant &value, in
 
     AbstractEmployee *employee = static_cast<AbstractEmployee*>(index.internalPointer());
 
-    QSqlQuery q;
+    DAL::updateEmployeeField(index.column(), value, employee->id());
 
     switch (index.column()) {
     case 0:
         employee->setName(value.toString());
-        q.prepare(QString(EMPLOYEE_UPDATE_QUERY).arg("name"));
         break;
     case 1:
         employee->setDateOfEmployment(value.toDate());
-        q.prepare(QString(EMPLOYEE_UPDATE_QUERY).arg("date_of_employment"));
         break;
     case 2:
         employee->setBaseSalary(value.toInt());
-        q.prepare(QString(EMPLOYEE_UPDATE_QUERY).arg("base_salary"));
         break;
     default:
         return false;
     }
-
-    q.bindValue(":val", value);
-    q.bindValue(":id", employee->id());
-    q.exec();
 
     emit dataChanged(index, index);
 
@@ -199,22 +183,19 @@ bool EmployeesModel::removeRow(int row, const QModelIndex &parent)
         return false;
     }
 
-    Manager *employee = static_cast<Manager*>(parent.internalPointer());
+    Manager *manager = static_cast<Manager*>(parent.internalPointer());
 
     beginRemoveRows(parent, row, row+1);
 
-    QSqlQuery q;
-    q.prepare(EMPLOYEE_REMOVE_QUERY); // Все подчиненные автоматом удалятся на стороне базы
-    q.bindValue(":id", employee->subordinateId(row));
-    q.exec();
+    DAL::removeEmployeeFromBase(manager->subordinateId(row));
 
-    employee->removeSubordinate(row);
+    manager->removeSubordinate(row);
     endRemoveRows();
 
     return true;
 }
 
-bool EmployeesModel::insertRow(int row, const QModelIndex &parent, int type, AbstractEmployee *employee)
+bool EmployeesModel::insertRow(int row, const QModelIndex &parent, AbstractEmployee *employee)
 {
     if (!parent.isValid())
     {
@@ -224,21 +205,7 @@ bool EmployeesModel::insertRow(int row, const QModelIndex &parent, int type, Abs
     beginInsertRows(parent, row, row+1);
 
     ((Manager*)employee->chief())->addSubordinate(employee);
-
-    QSqlQuery q;
-    q.prepare(EMPLOYEE_ADD_QUERY);
-    q.bindValue(":p",((AbstractEmployee*)employee->chief())->id());
-    q.bindValue(":n",employee->name());
-    q.bindValue(":s",employee->baseSalary());
-    q.bindValue(":d",employee->dateOfEmployment());
-    q.bindValue(":t",type);
-
-    if (q.exec())
-    {
-        q.exec(INSERTED_ROW_ID_QUERY);
-        q.first();
-        employee->setId(q.value(0).toInt());
-    }
+    DAL::addEmployeeToBase(employee);
 
     endInsertRows();
 
@@ -262,32 +229,11 @@ Qt::ItemFlags EmployeesModel::flags(const QModelIndex &index) const
 
 void EmployeesModel::initFromDb()
 {
-    QHash<int, AbstractEmployee *> allEmployees;
+    QList<AbstractEmployee *> employees = DAL::getEmployeesFromBase();
 
-    QSqlQuery q(EMPLOYEES_QUERY);
-    q.first();
-    do
-    {
-        int id = q.value("id").toInt();
-        int kind = q.value("kind").toInt();
-        int chiefId = q.value("parent").toInt();
-        Manager *chief = (Manager*)allEmployees[chiefId];
-
-        if (!chief)
-        {
-            chief = (Manager*)rootEmployee;
-        }
-
-        QString name = q.value("name").toString();
-        QDate dateOfEmployment = q.value("date_of_employment").toDate();
-        int baseSalary = q.value("base_salary").toInt();
-
-        AbstractEmployee *employee = EmployeesFactory::createEmployee((EmployeeKind)kind, id, name, dateOfEmployment, baseSalary, chief);
-
-        chief->addSubordinate(employee);
-        allEmployees[id] = employee;
+    foreach (AbstractEmployee *employee, employees) {
+        ((Manager*)rootEmployee)->addSubordinate(employee);
     }
-    while (q.next());
 }
 
 float EmployeesModel::totalSalary() const

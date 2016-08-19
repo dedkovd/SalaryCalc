@@ -4,7 +4,6 @@
 #include "addemployeedialog.h"
 #include "employeesmodel.h"
 #include "manager.h"
-#include "employee.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -12,7 +11,7 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     model = new EmployeesModel();
-    ui->treeView->setModel(model);    
+    ui->treeView->setModel(model);
     ui->treeView->header()->setStretchLastSection(false);
     ui->treeView->header()->setSectionResizeMode(QHeaderView::ResizeToContents);
 
@@ -70,9 +69,10 @@ void MainWindow::on_actionAdd_employee_triggered()
     Manager *manager = static_cast<Manager*>(selected.internalPointer());
 
     AddEmployeeDialog d;
-    d.setChief(manager);
     if (d.exec() == QDialog::Accepted)
     {
-        model->insertRow(selected.row(), selected, d.employeeType(), (AbstractEmployee*)d.newEmployee());
+        AbstractEmployee *employee = d.newEmployee();
+        employee->setChief(manager);
+        model->insertRow(selected.row(), selected, employee);
     }
 }

@@ -1,13 +1,12 @@
 #include "employee.h"
 #include "math.h"
 
-Employee::Employee(int id, QString name, QDate dateOfEmployment, int baseSalary, AbstractEmployee* chief)
+Employee::Employee(int id, QString name, QDate dateOfEmployment, int baseSalary)
 {
     _id = id;
     _name = name;
     _dateOfEmployment = dateOfEmployment;
     _baseSalary = baseSalary;
-    _chief = chief;
 }
 
 Employee::~Employee()
@@ -65,6 +64,11 @@ float Employee::salaryAtDate(const QDate date) const
 AbstractEmployee *Employee::chief() const
 {
     return _chief;
+}
+
+void Employee::setChief(AbstractEmployee *chief)
+{
+    this->_chief = chief;
 }
 
 int Employee::id() const

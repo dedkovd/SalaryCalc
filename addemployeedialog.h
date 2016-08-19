@@ -16,8 +16,6 @@ public:
     explicit AddEmployeeDialog(QWidget *parent = 0);
     ~AddEmployeeDialog();
 
-    void setChief(AbstractEmployee *chief);
-
     AbstractEmployee *newEmployee() const;
     int employeeType() const;
 

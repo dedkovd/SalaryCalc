@@ -35,6 +35,7 @@ public:
     virtual EmployeeKind kind() const = 0;
     // у каждого сотрудника может быть начальник
     virtual AbstractEmployee* chief() const = 0;
+    virtual void setChief(AbstractEmployee *chief) = 0;
     // почти у каждого сотрудника могут быть подчиненные
     virtual bool canHaveSubbordinates() const = 0;
     virtual QList<AbstractEmployee*> subordinates() const = 0;

@@ -17,11 +17,6 @@ AddEmployeeDialog::~AddEmployeeDialog()
     delete ui;
 }
 
-void AddEmployeeDialog::setChief(AbstractEmployee *chief)
-{
-    _chief = chief;
-}
-
 AbstractEmployee *AddEmployeeDialog::newEmployee() const
 {
     AbstractEmployee *newEmployee;
@@ -32,13 +27,13 @@ AbstractEmployee *AddEmployeeDialog::newEmployee() const
 
     switch (ui->cbType->currentIndex()) {
     case 0:
-       newEmployee = new Employee(-1, name, dateOfEmployed, baseSalary, _chief);
+       newEmployee = new Employee(-1, name, dateOfEmployed, baseSalary);
        break;
     case 1:
-       newEmployee = new Manager(-1, name, dateOfEmployed, baseSalary, _chief);
+       newEmployee = new Manager(-1, name, dateOfEmployed, baseSalary);
        break;
     case 2:
-       newEmployee = new Sales(-1, name, dateOfEmployed, baseSalary, _chief);
+       newEmployee = new Sales(-1, name, dateOfEmployed, baseSalary);
        break;
     default:
         break;

@@ -6,7 +6,7 @@
 class Sales : public Manager
 {
 public:
-    Sales(int id, QString name, QDate dateOfEmployment, int baseSalary, AbstractEmployee* chief = 0);
+    Sales(int id, QString name, QDate dateOfEmployment, int baseSalary);
 
     EmployeeKind kind() const { return KindSales; }
 
