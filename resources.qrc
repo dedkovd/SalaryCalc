@@ -2,4 +2,9 @@
     <qresource prefix="/">
         <file>db_init.sql</file>
     </qresource>
+    <qresource prefix="/images">
+        <file alias="1">manager.png</file>
+        <file alias="0">employee.png</file>
+        <file alias="2">sales.png</file>
+    </qresource>
 </RCC>

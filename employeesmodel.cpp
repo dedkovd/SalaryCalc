@@ -2,7 +2,7 @@
 #include "manager.h"
 #include "dal.h"
 
-#include <QDebug>
+#include <QIcon>
 
 EmployeesModel::EmployeesModel()
 {
@@ -17,12 +17,17 @@ QVariant EmployeesModel::data(const QModelIndex &index, int role) const
         return QVariant();
     }
 
-    if (role != Qt::DisplayRole && role != Qt::EditRole)
+    if (role != Qt::DisplayRole && role != Qt::EditRole && role != Qt::DecorationRole)
     {
         return QVariant();
     }
 
     AbstractEmployee *employee = static_cast<AbstractEmployee*>(index.internalPointer());
+
+    if (role == Qt::DecorationRole && index.column() == 0)
+    {
+        return QIcon(QString(":/images/%1").arg(employee->kind()));
+    }
 
     switch (index.column()) {
     case 0:
