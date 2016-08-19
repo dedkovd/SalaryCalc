@@ -59,7 +59,7 @@ void MainWindow::updateActions()
     ui->actionRemove_employee->setEnabled(idx.isValid());
     if (idx.isValid())
     {
-        BaseEmployee *empl = static_cast<BaseEmployee*>(idx.internalPointer());
+        AbstractEmployee *empl = static_cast<AbstractEmployee*>(idx.internalPointer());
         ui->actionAdd_employee->setEnabled(empl->canHaveSubbordinates());
     }
 }
@@ -73,6 +73,6 @@ void MainWindow::on_actionAdd_employee_triggered()
     d.setChief(manager);
     if (d.exec() == QDialog::Accepted)
     {
-        model->insertRow(selected.row(), selected, d.employeeType(), (BaseEmployee*)d.newEmployee());
+        model->insertRow(selected.row(), selected, d.employeeType(), (AbstractEmployee*)d.newEmployee());
     }
 }

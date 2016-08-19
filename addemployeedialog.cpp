@@ -17,7 +17,7 @@ AddEmployeeDialog::~AddEmployeeDialog()
     delete ui;
 }
 
-void AddEmployeeDialog::setChief(BaseEmployee *chief)
+void AddEmployeeDialog::setChief(AbstractEmployee *chief)
 {
     _chief = chief;
 }

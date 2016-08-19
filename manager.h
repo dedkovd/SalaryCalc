@@ -1,12 +1,12 @@
 #ifndef MANAGER_H
 #define MANAGER_H
 
-#include "baseemployee.h"
+#include "employee.h"
 
-class Manager : public BaseEmployee
+class Manager : public Employee
 {
 public:
-    explicit Manager(int id, QString name, QDate dateOfEmployment, int baseSalary, BaseEmployee* chief = 0);
+    explicit Manager(int id, QString name, QDate dateOfEmployment, int baseSalary, AbstractEmployee *chief = 0);
     ~Manager();
 
     void addSubordinate(AbstractEmployee* employee);
@@ -15,10 +15,12 @@ public:
 
     float childsSalaryAtDate(QDate date) const;
 
-    QList<AbstractEmployee *> allChildsTree() const;
+    QList<AbstractEmployee *> allSubordinates() const;
     QList<AbstractEmployee *> subordinates() const;
 
     bool canHaveSubbordinates() const { return true; }
+
+    EmployeeKind kind() const { return KindManager; }
 
 protected:
     float calcSalaryAtDate(const QDate date) const;

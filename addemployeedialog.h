@@ -2,7 +2,7 @@
 #define ADDEMPLOYEEDIALOG_H
 
 #include <QDialog>
-#include "baseemployee.h"
+#include "abstractemployee.h"
 
 namespace Ui {
 class AddEmployeeDialog;
@@ -16,7 +16,7 @@ public:
     explicit AddEmployeeDialog(QWidget *parent = 0);
     ~AddEmployeeDialog();
 
-    void setChief(BaseEmployee *chief);
+    void setChief(AbstractEmployee *chief);
 
     AbstractEmployee *newEmployee() const;
     int employeeType() const;
@@ -24,7 +24,7 @@ public:
 private:
     Ui::AddEmployeeDialog *ui;
 
-    BaseEmployee *_chief;
+    AbstractEmployee *_chief;
 };
 
 #endif // ADDEMPLOYEEDIALOG_H

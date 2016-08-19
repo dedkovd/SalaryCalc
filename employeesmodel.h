@@ -5,7 +5,7 @@
 #include <QAbstractItemModel>
 #include <QModelIndex>
 
-#include "baseemployee.h"
+#include "abstractemployee.h"
 
 class EmployeesModel : public QAbstractItemModel
 {
@@ -27,14 +27,14 @@ public:
 
     bool setData(const QModelIndex &index, const QVariant &value, int role);
     bool removeRow(int row, const QModelIndex &parent);
-    bool insertRow(int row, const QModelIndex &parent, int type, BaseEmployee *employee);
+    bool insertRow(int row, const QModelIndex &parent, int type, AbstractEmployee *employee);
 
     Qt::ItemFlags flags(const QModelIndex &index) const;
 
     float totalSalary() const;
 
 private:
-    BaseEmployee *rootEmployee;
+    AbstractEmployee *rootEmployee;
 
     QDate _modelDate;
 

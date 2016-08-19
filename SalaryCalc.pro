@@ -15,7 +15,6 @@ TEMPLATE = app
 SOURCES += main.cpp\
         mainwindow.cpp \
     employee.cpp \
-    baseemployee.cpp \
     manager.cpp \
     sales.cpp \
     employeesmodel.cpp \
@@ -23,7 +22,6 @@ SOURCES += main.cpp\
 
 HEADERS  += mainwindow.h \
     employee.h \
-    baseemployee.h \
     manager.h \
     abstractemployee.h \
     sales.h \

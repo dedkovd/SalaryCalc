@@ -18,12 +18,10 @@ INCLUDEPATH += ../
 
 SOURCES += tst_testemployee.cpp \
     ../employee.cpp \
-    ../baseemployee.cpp \
     ../manager.cpp \
     ../sales.cpp
 
 HEADERS += ../employee.h \
-        ../baseemployee.h \
         ../manager.h \
         ../sales.cpp
 

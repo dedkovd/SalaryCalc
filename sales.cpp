@@ -1,6 +1,6 @@
 #include "sales.h"
 
-Sales::Sales(int id, QString name, QDate dateOfEmployment, int baseSalary, BaseEmployee *chief):
+Sales::Sales(int id, QString name, QDate dateOfEmployment, int baseSalary, AbstractEmployee *chief):
     Manager(id, name, dateOfEmployment, baseSalary, chief)
 {
 }
@@ -16,7 +16,7 @@ float Sales::allLevelsSalaryAtDate(QDate date) const
 {
     float res = 0;
 
-    foreach (AbstractEmployee *subordinator, this->allChildsTree()) {
+    foreach (AbstractEmployee *subordinator, this->allSubordinates()) {
         res += subordinator->salaryAtDate(date);
     }
 

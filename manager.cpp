@@ -1,7 +1,7 @@
 #include "manager.h"
 
-Manager::Manager(int id, QString name, QDate dateOfEmployment, int baseSalary, BaseEmployee *chief):
-    BaseEmployee(id,name,dateOfEmployment,baseSalary,chief)
+Manager::Manager(int id, QString name, QDate dateOfEmployment, int baseSalary, AbstractEmployee *chief):
+    Employee(id,name,dateOfEmployment,baseSalary,chief)
 {
 }
 
@@ -22,7 +22,7 @@ void Manager::removeSubordinate(const int index)
 
 int Manager::subordinateId(const int index)
 {
-    BaseEmployee *subordinate = (BaseEmployee*)this->_subordinates.at(index);
+    Employee *subordinate = (Employee*)this->_subordinates.at(index);
     return subordinate->id();
 }
 
@@ -44,14 +44,14 @@ float Manager::childsSalaryAtDate(QDate date) const
     return res;
 }
 
-QList<AbstractEmployee *> Manager::allChildsTree() const
+QList<AbstractEmployee *> Manager::allSubordinates() const
 {
     QList<AbstractEmployee*> res;
 
     foreach(AbstractEmployee *subordinator, this->_subordinates)
     {
         res.append(subordinator);
-        foreach (AbstractEmployee *subsub, subordinator->allChildsTree())
+        foreach (AbstractEmployee *subsub, subordinator->allSubordinates())
         {
             res.append(subsub);
         }

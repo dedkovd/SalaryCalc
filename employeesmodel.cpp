@@ -30,7 +30,7 @@ QVariant EmployeesModel::data(const QModelIndex &index, int role) const
         return QVariant();
     }
 
-    BaseEmployee *employee = static_cast<BaseEmployee*>(index.internalPointer());
+    AbstractEmployee *employee = static_cast<AbstractEmployee*>(index.internalPointer());
 
     switch (index.column()) {
     case 0:
@@ -82,10 +82,10 @@ QModelIndex EmployeesModel::index(int row, int column, const QModelIndex &parent
     }
     else
     {
-        parentEmployee = static_cast<BaseEmployee*>(parent.internalPointer());
+        parentEmployee = static_cast<AbstractEmployee*>(parent.internalPointer());
     }
 
-    BaseEmployee *subordinate = static_cast<BaseEmployee*>(parentEmployee->subordinates().at(row));
+    AbstractEmployee *subordinate = static_cast<AbstractEmployee*>(parentEmployee->subordinates().at(row));
     if (subordinate)
     {
         return createIndex(row, column, subordinate);
@@ -103,8 +103,8 @@ QModelIndex EmployeesModel::parent(const QModelIndex &child) const
         return QModelIndex();
     }
 
-    BaseEmployee *subordinate = static_cast<BaseEmployee*>(child.internalPointer());
-    BaseEmployee *chief = static_cast<BaseEmployee*>(subordinate->chief());
+    AbstractEmployee *subordinate = static_cast<AbstractEmployee*>(child.internalPointer());
+    AbstractEmployee *chief = static_cast<AbstractEmployee*>(subordinate->chief());
 
     if (chief == rootEmployee)
     {
@@ -116,7 +116,7 @@ QModelIndex EmployeesModel::parent(const QModelIndex &child) const
 
 int EmployeesModel::rowCount(const QModelIndex &parent) const
 {
-    BaseEmployee *chief;
+    AbstractEmployee *chief;
     if (parent.column() > 0)
     {
         return 0;
@@ -128,7 +128,7 @@ int EmployeesModel::rowCount(const QModelIndex &parent) const
     }
     else
     {
-        chief = static_cast<BaseEmployee*>(parent.internalPointer());
+        chief = static_cast<AbstractEmployee*>(parent.internalPointer());
     }
 
     return chief->subordinates().count();
@@ -161,7 +161,7 @@ bool EmployeesModel::setData(const QModelIndex &index, const QVariant &value, in
         return false;
     }
 
-    BaseEmployee *employee = static_cast<BaseEmployee*>(index.internalPointer());
+    AbstractEmployee *employee = static_cast<AbstractEmployee*>(index.internalPointer());
 
     QSqlQuery q;
 
@@ -185,6 +185,8 @@ bool EmployeesModel::setData(const QModelIndex &index, const QVariant &value, in
     q.bindValue(":val", value);
     q.bindValue(":id", employee->id());
     q.exec();
+
+    emit dataChanged(index, index);
 
     return true;
 }
@@ -211,7 +213,7 @@ bool EmployeesModel::removeRow(int row, const QModelIndex &parent)
     return true;
 }
 
-bool EmployeesModel::insertRow(int row, const QModelIndex &parent, int type, BaseEmployee *employee)
+bool EmployeesModel::insertRow(int row, const QModelIndex &parent, int type, AbstractEmployee *employee)
 {
     if (!parent.isValid())
     {
@@ -224,7 +226,7 @@ bool EmployeesModel::insertRow(int row, const QModelIndex &parent, int type, Bas
 
     QSqlQuery q;
     q.prepare(EMPLOYEE_ADD_QUERY);
-    q.bindValue(":p",((BaseEmployee*)employee->chief())->id());
+    q.bindValue(":p",((AbstractEmployee*)employee->chief())->id());
     q.bindValue(":n",employee->name());
     q.bindValue(":s",employee->baseSalary());
     q.bindValue(":d",employee->dateOfEmployment());
@@ -268,7 +270,7 @@ void EmployeesModel::initFromDb()
         int id = q.value("id").toInt();
         int type = q.value("type").toInt();
         int chiefId = q.value("parent").toInt();
-        BaseEmployee *chief = (BaseEmployee*)allEmployees[chiefId];
+        AbstractEmployee *chief = (AbstractEmployee*)allEmployees[chiefId];
 
         if (!chief)
         {
@@ -303,7 +305,7 @@ void EmployeesModel::initFromDb()
 
 float EmployeesModel::totalSalary() const
 {
-    QList<AbstractEmployee*> allEmployes = rootEmployee->allChildsTree();
+    QList<AbstractEmployee*> allEmployes = rootEmployee->allSubordinates();
     float res = 0.f;
     foreach (AbstractEmployee * empl, allEmployes)
     {

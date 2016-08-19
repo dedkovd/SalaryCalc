@@ -6,7 +6,9 @@
 class Sales : public Manager
 {
 public:
-    Sales(int id, QString name, QDate dateOfEmployment, int baseSalary, BaseEmployee* chief = 0);
+    Sales(int id, QString name, QDate dateOfEmployment, int baseSalary, AbstractEmployee* chief = 0);
+
+    EmployeeKind kind() const { return KindSales; }
 
 protected:
     float calcSalaryAtDate(const QDate date) const;
