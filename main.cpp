@@ -4,7 +4,7 @@
 #include <QDebug>
 #include <QtSql>
 
-bool initDatabase(QString fileName = ":MEMORY:")
+bool initDatabase(QString fileName = ":memory:")
 {
     QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
     db.setDatabaseName(fileName);

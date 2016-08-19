@@ -3,12 +3,13 @@
 #include "sales.h"
 #include "employee.h"
 
-#include <QDebug>
 #include <QtSql>
 
-#define EMPLOYEES_QUERY "select id, parent, name, base_salary, date_of_employment, type from employees order by parent"
+#include "employeesfactory.h"
+
+#define EMPLOYEES_QUERY "select id, parent, name, base_salary, date_of_employment, kind from employees order by parent"
 #define EMPLOYEE_REMOVE_QUERY "delete from employees where id = :id"
-#define EMPLOYEE_ADD_QUERY "insert into employees(parent, name, base_salary, date_of_employment, type) values (:p, :n, :s, :d, :t)"
+#define EMPLOYEE_ADD_QUERY "insert into employees(parent, name, base_salary, date_of_employment, kind) values (:p, :n, :s, :d, :t)"
 #define EMPLOYEE_UPDATE_QUERY "update employees set %1 = :val where id = :id"
 #define INSERTED_ROW_ID_QUERY "select last_insert_rowid()"
 
@@ -268,36 +269,22 @@ void EmployeesModel::initFromDb()
     do
     {
         int id = q.value("id").toInt();
-        int type = q.value("type").toInt();
+        int kind = q.value("kind").toInt();
         int chiefId = q.value("parent").toInt();
-        AbstractEmployee *chief = (AbstractEmployee*)allEmployees[chiefId];
+        Manager *chief = (Manager*)allEmployees[chiefId];
 
         if (!chief)
         {
-            chief = rootEmployee;
+            chief = (Manager*)rootEmployee;
         }
 
         QString name = q.value("name").toString();
         QDate dateOfEmployment = q.value("date_of_employment").toDate();
         int baseSalary = q.value("base_salary").toInt();
 
-        AbstractEmployee *employee;
+        AbstractEmployee *employee = EmployeesFactory::createEmployee((EmployeeKind)kind, id, name, dateOfEmployment, baseSalary, chief);
 
-        switch (type) {
-        case 0:
-            employee = new Employee(id, name, dateOfEmployment, baseSalary, chief);
-            break;
-        case 1:
-            employee = new Manager(id, name, dateOfEmployment, baseSalary, chief);
-            break;
-        case 2:
-            employee = new Sales(id, name, dateOfEmployment, baseSalary, chief);
-            break;
-        default:
-            break;
-        }
-
-        ((Manager*)chief)->addSubordinate(employee);
+        chief->addSubordinate(employee);
         allEmployees[id] = employee;
     }
     while (q.next());

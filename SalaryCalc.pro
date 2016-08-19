@@ -18,7 +18,8 @@ SOURCES += main.cpp\
     manager.cpp \
     sales.cpp \
     employeesmodel.cpp \
-    addemployeedialog.cpp
+    addemployeedialog.cpp \
+    employeesfactory.cpp
 
 HEADERS  += mainwindow.h \
     employee.h \
@@ -26,7 +27,8 @@ HEADERS  += mainwindow.h \
     abstractemployee.h \
     sales.h \
     employeesmodel.h \
-    addemployeedialog.h
+    addemployeedialog.h \
+    employeesfactory.h
 
 FORMS    += mainwindow.ui \
     addemployeedialog.ui
